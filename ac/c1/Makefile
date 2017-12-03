@@ -1,13 +1,21 @@
 SRC_DIR := ./.
-BIN_DIR := ./bin
+DBG_DIR := ./bin/debug
+REL_DIR := ./bin/release
 SRC_FILES := $(wildcard $(SRC_DIR)/*.cpp)
-BIN_FILES := $(patsubst $(SRC_DIR)/%.cpp, $(BIN_DIR)/%, $(SRC_FILES))
+DBG_FILES := $(patsubst $(SRC_DIR)/%.cpp, $(DBG_DIR)/%, $(SRC_FILES))
+REL_FILES := $(patsubst $(SRC_DIR)/%.cpp, $(REL_DIR)/%, $(SRC_FILES))
+DBG_FLAGS := -Wall -g -DCON_IO
+REL_FLAGS := -Wall -O2
 
-all: $(BIN_FILES)
+all: $(DBG_FILES) $(REL_FILES)
 
-$(BIN_DIR)/%: $(SRC_DIR)/%.cpp
-	mkdir -p bin
-	g++ $^ -o $@
+$(DBG_DIR)/%: $(SRC_DIR)/%.cpp
+	mkdir -p $(DBG_DIR)
+	g++ $(DBG_FLAGS) $^ -o $@
+
+$(REL_DIR)/%: $(SRC_DIR)/%.cpp
+	mkdir -p $(REL_DIR)
+	g++ $(REL_FLAGS) $^ -o $@
 
 clean:
 	rm -Rf bin
