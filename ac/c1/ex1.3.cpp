@@ -1,6 +1,6 @@
 #include <cstdio>
 
-int main(void)
+int main()
 {
 	int n;
 	if (scanf("%d", &n) == 1) {

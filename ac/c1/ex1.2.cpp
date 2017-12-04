@@ -1,6 +1,6 @@
 #include <cstdio>
 
-int main(void)
+int main()
 {
 	double f;
 	if (scanf("%lf", &f) == 1) {
