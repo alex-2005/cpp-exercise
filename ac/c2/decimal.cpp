@@ -13,19 +13,28 @@ int main()
 		double q = a*1.0/b;
 		int ig = (int)q;
 		double d = q - ig;
+		int d1[c+1];
 		printf("%d.", ig);
-		for (int i = 0; i < c-1; i++) {
+		for (int i = 0; i < c+1; i++) {
 			d *= 10;
-			printf("%d", (int)d);
+			d1[i] = (int)d;
 			d -= (int)d;
 		}
-		d *= 100;
-		int v = (int)d;
-		if (v % 10 >= 5) {
-			printf("%d\n", v/10 + 1);
-		} else {
-			printf("%d\n", v/10);
+		for (int i = c; i > -1; i--) {
+			if (i == c) {
+				if (d1[c] == 9)
+					d1[c-1]++;
+			} else {
+				if (d1[i] == 10) {
+					d1[i] = 0;
+					d1[i-1]++;
+				}
+			}
 		}
+		for (int i = 0; i < c; i++) {
+			printf("%d", d1[i]);
+		}
+		printf("\n");
 	}
 	return 0;
 }
