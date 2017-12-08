@@ -3,6 +3,10 @@ using namespace std;
 
 int main()
 {
+#ifndef CON_IO
+	freopen("permutation_m2.in", "r", stdin);
+	freopen("permutation_m2.out", "w", stdout);
+#endif
 	for (int a = 1; a < 4; a++) {
 		for (int b = 1; b < 10; b++) {
 			if (b == a)
