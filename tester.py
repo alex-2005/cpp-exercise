@@ -52,30 +52,34 @@ def test_program(path, name, mem, timeout):
 	ins, outs = get_inout_files(name)
 	shutil.copyfile(ins[0], root + base_name + ".in")
 	ret = -1
-	tle = False
+	tle = None
 	dur = None
 	resource.setrlimit(resource.RLIMIT_AS, (mem*(1<<20), resource.RLIM_INFINITY))
 	try:
 		start = datetime.datetime.now()
 		ret = subprocess.call(path, cwd=root, timeout=timeout, stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL)
 		dur = datetime.datetime.now() - start
-	except Exception as ex:
-		print(colored("timeout executing {0}: {1}".format(name, ex), "red"), file = sys.stderr)
-		tle = True
+	except subprocess.TimeoutExpired as ex:
+		tle = ex
 	resource.setrlimit(resource.RLIMIT_AS, (resource.RLIM_INFINITY, resource.RLIM_INFINITY))
 	
 	std_answer = read_file(outs[0])
 	chk_answer = read_file(root + base_name + ".out")
 	dur = int(dur.total_seconds()*1000) if dur is not None else -1
 	mark = 100 if std_answer == chk_answer else 0
+	if ret == 0 and tle is not None and mark == 0:
+		print("standard answer:")
+		print(colored(std_answer.replace(' ', '_'), "red"))
+		print("your answer:")
+		print(colored(chk_answer.replace(' ', '_'), "blue"))
 	return (ret, tle, dur, mark)
 
 if __name__ == '__main__':
 	for tgt in targets:
 		fn = tgt["name"] + ".cpp"
 		if not os.path.isfile(fn):
-			print(colored("{0} doesn't exist".format(fn), "red"), file = sys.stderr)
 			tgt["code"] = -1
+			print(colored("{0} doesn't exist".format(fn), "red"), file = sys.stderr)
 			continue
 
 		base_name = os.path.basename(fn)
@@ -84,16 +88,18 @@ if __name__ == '__main__':
 		shutil.copyfile(fn, root + base_name)
 		ret, exe_path = compile(root + base_name)
 		if ret != 0:
-			print(colored("{0} doesn't compile: {1}".format(fn, ret), "red"), file = sys.stderr)
 			tgt["code"] = -2
+			print(colored("{0} doesn't compile: {1}".format(fn, ret), "red"), file = sys.stderr)
 			continue
 		mem = tgt["mem"] if "mem" in tgt else 64
 		timeout = tgt["timeout"] if "timeout" in tgt else 1
 		ret, tle, dur, mark = test_program(exe_path, tgt["name"], mem, timeout)
-		if ret != 0:
-			tgt["code"] = -3
-		elif tle:
+		if tle:
 			tgt["code"] = -4
+			print(colored("timeout executing {0}: {1}".format(tgt["name"], tle), "red"), file = sys.stderr)
+		elif ret != 0:
+			tgt["code"] = -3
+			print(colored("error executing {0}: {1}".format(tgt["name"], ret), "red"), file = sys.stderr)
 		else:
 			tgt["code"] = mark
 			color = "green" if mark == 100 else "yellow"
