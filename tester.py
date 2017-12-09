@@ -67,7 +67,7 @@ def test_program(path, name, mem, timeout):
 	chk_answer = read_file(root + base_name + ".out")
 	dur = int(dur.total_seconds()*1000) if dur is not None else -1
 	mark = 100 if std_answer == chk_answer else 0
-	if ret == 0 and tle is not None and mark == 0:
+	if ret == 0 and tle is None and mark == 0:
 		print("standard answer:")
 		print(colored(std_answer.replace(' ', '_'), "red"))
 		print("your answer:")
@@ -76,6 +76,9 @@ def test_program(path, name, mem, timeout):
 
 if __name__ == '__main__':
 	for tgt in targets:
+		if len(sys.argv) > 1 and tgt["name"] not in sys.argv[1:]:
+			continue
+
 		fn = tgt["name"] + ".cpp"
 		if not os.path.isfile(fn):
 			tgt["code"] = -1
