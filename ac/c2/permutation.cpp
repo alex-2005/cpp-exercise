@@ -1,22 +1,39 @@
+#include <iostream>
 #include <cstdio>
+using namespace std;
 
 int main()
 {
-	for (int i = 1; i < 10; i++) {
-		for (int j = 1; j < 10; j++) {
-			for (int k = 1; k < 10; k++) {
-				for (int a = 1; a < 10; a++) {
-					for (int b = 1; b < 10; b++) {
-						for (int c = 1; c < 10; c++) {
-							for (int d = 1; d < 10; d++) {
-								for (int e = 1; e < 10; e++) {
-									if (e!=i && e!=j && e!=k && e!=a && e!=b && e!=c && e!=d && j!=i && k!=i && k!=j && a!=i && a!=j && a!=k && b!=i && b!=j && b!=k && b!=a && c!=i && c!=j && c!=k && c!=a && c!=b && d!=i && d!=j && d!=k && d!=a && d!=b && d!=c) {
-										int f = 45-a-b-c-d-e-i-j-k;
-										int sum1 = i * 100 + j * 10 + k;
-										int sum2 = a * 100 + b * 10 + c;
-										int sum3 = d * 100 + e * 10 + f;
-										if (sum1 == sum2/2 && sum1 == sum3/3)
-												printf("%d%d%d %d%d%d %d%d%d\n", i, j, k, a, b ,c, d, e, f);
+#ifndef CON_IO
+	freopen("permutation.in", "r", stdin);
+	freopen("permutation.out", "w", stdout);
+#endif
+	for (int a = 1; a < 4; a++) {
+		for (int b = 1; b < 10; b++) {
+			if (b == a)
+				continue;
+			for (int c = 1; c < 10; c++) {
+				if (c == a || c == b)
+					continue;
+				for (int d = 2; d < 7; d++) {
+					if (d == a || d == b || d == c)
+						continue;
+					for (int e = 1; e < 10; e++) {
+						if (e == a || e == b || e == c || e == d)
+							continue;
+						for (int f = 1; f < 10; f++) {
+							if (f == a || f == b || f == c || f == d || f == d)
+								continue;
+							for (int g = 3; g < 10; g++) {
+								if (g == a || g == b || g == c || g == d || g == e || g == f)
+									continue;
+								for (int h = 1; h < 10; h++) {
+									if (h == a || h == b || h == c || h == d || h == e || h == f || h == g)
+										continue;
+									int i = 45-a-b-c-d-e-f-g-h;
+									int x = 100 * a + 10 * b + c, y = 100 * d + 10 * e + f, z = 100 * g + 10 * h + i;
+									if(2 * x == y && 3 * x == z) {
+										cout << x << " " <<  y << " " <<  z << endl;
 									}
 								}
 							}

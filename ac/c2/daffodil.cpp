@@ -2,12 +2,16 @@
 #include <cstdio>
 using namespace std;
 
-int main(void)
+int main()
 {
+#ifndef CON_IO
+	freopen("daffodil.in", "r", stdin);
+	freopen("daffodil.out", "w", stdout);
+#endif
 	for (int i = 1; i < 10; i++) {
 		for (int j = 0; j < 10; j++) {
 			for (int k = 0; k < 10; k++) {
-				long long a = i * i * i, b = j * j * j, c = k * k *k;
+				long long a = i * i * i, b = j * j * j, c = k * k * k;
 				if ((100 * i + 10 * j + k) == (a + b + c))
 					cout << i << j << k << endl;
 			}
