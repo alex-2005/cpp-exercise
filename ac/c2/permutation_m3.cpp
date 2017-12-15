@@ -23,7 +23,7 @@ int main()
 				digits[0] = digits[a] = digits[b] = digits[c] = 1;
 				while (y != 0 && z != 0) {
 					int i = y % 10, j = z % 10;
-					if (i == j || digits[i] != 0 || digits[j] != 0) {
+					if (i == j || digits[i] || digits[j]) {
 						ok = 0;
 						break;
 					}
@@ -31,7 +31,7 @@ int main()
 					z /= 10;
 					digits[i] = digits[j] = 1;
 				}
-				if (ok == 1)
+				if (ok)
 					cout << x << " " << 2 * x << " " << 3 * x << endl;
 			}
 		}
