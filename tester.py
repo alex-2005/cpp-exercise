@@ -16,6 +16,10 @@ targets = [
 	{"name": "ac/c2/subsequence"},
 	{"name": "ac/c2/decimal"},
 	{"name": "ac/c2/permutation"},
+	{"name": "ac/c3/score"},
+	{"name": "ac/c3/digit_counting"},
+	{"name": "ac/c3/molar_mass"},
+	{"name": "ac/c3/periodic_strings"},
 ]
 
 root = "/tmp/algo-tests/"
@@ -68,6 +72,8 @@ def test_program(path, name, mem, timeout):
 	dur = int(dur.total_seconds()*1000) if dur is not None else -1
 	mark = 100 if std_answer == chk_answer else 0
 	if ret == 0 and tle is None and mark == 0:
+		print("input:")
+		print(colored(read_file(ins[0]), "green"))
 		print("standard answer:")
 		print(colored(std_answer.replace(' ', '_'), "red"))
 		print("your answer:")
